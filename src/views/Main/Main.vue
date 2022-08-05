@@ -15,7 +15,7 @@
       <Banner></Banner>
     </div>
     <main>
-      <BlogList :data="BlogData"></BlogList>
+      <BlogList v-for="art in BlogData" :key="art.id" :data="art"></BlogList>
     </main>
   </div>
 </template>
@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { reactive, onMounted } from "vue";
 import Banner from "../../components/Banner/Banner.vue";
-import BlogList from "../../components/BlogList/BlogList.vue";
+import BlogList from "../../components/BlogList/BlogListItem.vue";
 import { getArticlePage } from '../../api/article'
 
 const rolling = () => {
@@ -70,8 +70,8 @@ interface Article{
     tags: []
 }
 let BlogData: Array<Article>;
-await getArticlePage(0, 1).then((res) => {
-  BlogData = reactive(res.data);
+await getArticlePage(0, 18).then((res) => {
+  BlogData = reactive(res.data.data);
 })
 
 var navState = true;
@@ -101,6 +101,8 @@ onMounted(() => {
     navState = !navState;
 };
 burger.addEventListener("click", burgerClick);
+
+
 })
 
 
@@ -123,6 +125,7 @@ nav > div {
 }
 main {
   height: 200vh;
+  padding-top: 3vh;
 }
 .burger {
   position: fixed;
