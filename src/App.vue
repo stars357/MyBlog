@@ -1,13 +1,14 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import Main from './views/Main/Main.vue';
 </script>
 
 <template>
-    <div class="main">
-      <Suspense>
-        <router-view></router-view>
-      </Suspense>
+    <div>
+    <Suspense>
+      <Main></Main>
+    </Suspense>
     </div>
 </template>
 
@@ -23,8 +24,4 @@
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 } */
-.main{
-  color: #213547;
-  background-color: #ffffff;
-}
 </style>

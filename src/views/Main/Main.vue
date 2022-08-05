@@ -11,20 +11,15 @@
         <div>关于</div>
       </nav>
     </Teleport>
-    <div class="banner">
-      <Banner></Banner>
-    </div>
-    <main>
-      <BlogList v-for="art in BlogData" :key="art.id" :data="art"></BlogList>
-    </main>
+
+    <router-view></router-view>
+
   </div>
 </template>
 
 <script setup lang="ts">
 import { reactive, onMounted } from "vue";
-import Banner from "../../components/Banner/Banner.vue";
-import BlogList from "../../components/BlogList/BlogListItem.vue";
-import { getArticlePage } from '../../api/article'
+
 
 const rolling = () => {
   var pageWidth = window.innerWidth;
@@ -46,33 +41,21 @@ const rolling = () => {
   if(pageWidth >= 768){
   // console.log(123);
   if (window.scrollY >= 180) {
-    nav.style.backgroundColor = "rgba(255, 255, 255, 0.87)";
-    nav.style.color = "#213547";
+    nav.style.backgroundColor = "var(--nav-bg-color)";
+    nav.style.color = "var(--text-color)";
     nav.style.boxShadow = "0 5px 6px -5px rgb(133 133 133 / 60%)";
   } else {
     nav.style.backgroundColor = "rgba(255, 255, 255, 0.0)";
-    nav.style.color = "#ffffff";
+    nav.style.color = "var(--top-text-color)";
     nav.style.boxShadow = "";
   }
   }else{
-    nav.style.backgroundColor = "rgba(255, 255, 255, 0.87)";
+    nav.style.backgroundColor = "var(--nav-bg-color)";
     nav.style.color = "#213547";
     nav.style.boxShadow = "0 5px 6px -5px rgb(133 133 133 / 60%)";
   }
 };
 window.addEventListener("scroll", rolling);
-
-//获取文章
-interface Article{
-    id: number,
-    title: string,
-    text?: string,
-    tags: []
-}
-let BlogData: Array<Article>;
-await getArticlePage(0, 18).then((res) => {
-  BlogData = reactive(res.data.data);
-})
 
 var navState = true;
 let burger: HTMLElement;
@@ -101,11 +84,7 @@ onMounted(() => {
     navState = !navState;
 };
 burger.addEventListener("click", burgerClick);
-
-
 })
-
-
 </script>
 
 <style scoped>
@@ -116,16 +95,12 @@ nav {
   right: 0;
   display: flex;
   transition: background-color 800ms, color 800ms;
-  color: #fff;
+  color: var(--top-text-color);
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.87);
+  background-color: var(--nav-bg-color);
 }
 nav > div {
   font-size: 0.7rem;
-}
-main {
-  height: 200vh;
-  padding-top: 3vh;
 }
 .burger {
   position: fixed;
@@ -165,7 +140,7 @@ nav p{
 } */
 @media screen and (max-width: 768px) {
   nav {
-    background-color: rgba(255, 255, 255, 0.87);
+    background-color: var(--nav-bg-color);
     transform: translateY(-100px);
     opacity: 0;
     box-shadow: 0 5px 6px -5px rgb(133 133 133 / 60%);
@@ -176,13 +151,13 @@ nav p{
     padding-bottom: 1vh;
   }
   nav p{
-    color: #606266;
+    color: var(--nav-coler);
     margin: 1vh 0;
   }
   nav div{
     width: 100%;
     text-align: center;
-    color: #606266;
+    color:  var(--nav-coler);
     padding: 1.6vh 0;
     display: block;
   }
@@ -220,7 +195,7 @@ nav p{
         opacity: 1;
     }
 }
-@media screen and (min-width: 768px) and (max-width: 992px) {
+@media screen and (min-width: 768px) and (max-width: 1200px) {
   nav {
     flex-direction: row;
     justify-content: flex-end;
@@ -230,9 +205,10 @@ nav p{
     background-color: rgba(255, 255, 255, 0);
   }
   nav p{
+    font-size: 1.26rem;
     position: absolute;
     top: 0;
-    left: 0;
+    left: 1rem;
   }
   nav div{
     margin: 0 1rem;

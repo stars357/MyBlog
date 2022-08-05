@@ -48,13 +48,13 @@ onMounted(() => {
 }
 h1{
     font-size: 1.6rem;
-    color: #FAFCFF;
+    color: var(--top-text-color);
 }
 span{
     display: inline-block;
     width: 16px;
     height: 36px;
-    border-bottom: 3px solid #FAFCFF;
+    border-bottom: 3px solid var(--top-text-color);
     animation:cursor 800ms infinite;
     margin: 0 6px;
 }
