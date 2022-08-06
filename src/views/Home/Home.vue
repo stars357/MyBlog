@@ -4,14 +4,11 @@
             <Banner title="starry sky blog"></Banner>
         </div>
         <main>
-        <transition-group @enter="blogEnter">
-            <BlogListItem v-for="(art, index) in BlogData" :index="index" :key="art.id" :data="art"></BlogListItem>
-        </transition-group>
-            
+            <BlogList :data="BlogData" :number="pageNumber"></BlogList>
             <div class="tags">
                 <div>
                     <transition-group @enter="tagEnter">
-                        <a href="javascript:;" v-for="(tag, index) in tagData" :index="index" :key="tag.id"><Tag :name="tag.name" :bg-color="tag.bgColor"></Tag></a>
+                        <a href="javascript:;" @click="toBlogByTag(tag.id, tag.name)" v-for="(tag, index) in tagData" :index="index" :key="tag.id"><Tag :name="tag.name" :bg-color="tag.bgColor"></Tag></a>
                     </transition-group>
                     
                     
@@ -24,24 +21,17 @@
 <script setup lang="ts">
 import { reactive, onMounted } from "vue";
 import Banner from "../../components/Banner/Banner.vue";
-import BlogListItem from "../../components/BlogList/BlogListItem.vue";
+import BlogList from "../../components/BlogList/BlogList.vue";
 import { getArticlePage } from '../../api/article'
 import Tag from '../../components/Tag/Tag.vue'
 import { getTagAll } from '../../api/tag'
 import gsap from 'gsap'
+import { useRouter } from "vue-router";
+
+//初始化
+const router = useRouter();
 
 //加载动画，使用gsap
-const blogEnter = (el: Element, done: any) => {
-    // console.log(el.getAttribute('index'));
-    let i = el.getAttribute('index') as unknown as number;
-    i = i % pageNumber;
-    gsap.from(el, {
-        opacity: 0, 
-        y: 160, 
-        delay: i * 0.08,
-        onComplete: done
-    })
-}
 const tagEnter = (el: Element, done: any) => {
     // console.log(el.getAttribute('index'));
     let i = el.getAttribute('index') as unknown as number;
@@ -49,7 +39,7 @@ const tagEnter = (el: Element, done: any) => {
     gsap.from(el, {
         opacity: 0, 
         // x: 10, 
-        delay: i * 0.15,
+        delay: i * 0.1,
         onComplete: done
     })
 }
@@ -66,13 +56,20 @@ interface Tag{
     bgColor: string
 }
 //分页获取文章
-let nowPageNumber = 0;
-let pageNumber = 18;
+let nowPageNumber: number = 0;
+let pageNumber: number = Number(import.meta.env.VITE_PAGE_NUMBER);
 let BlogData: Array<Article> = reactive([]);
 let tagData: Array<Tag> = reactive([]);
 
 //请求数据初始化
 onMounted(async () => {
+        await getTagAll().then((res) => {
+        const data = res.data.data;
+        data.forEach((e: Tag) => {
+            tagData.push(e);
+        })
+        // console.log(tagData)
+    })
     await getArticlePage(0, pageNumber).then((res) => {
         const data = res.data.data;
         data.forEach((e: Article) => {
@@ -80,20 +77,13 @@ onMounted(async () => {
         })
         nowPageNumber += pageNumber;
     });
-    await getTagAll().then((res) => {
-        const data = res.data.data;
-        data.forEach((e: Tag) => {
-            tagData.push(e);
-        })
-        // console.log(tagData)
-    })
 })
 
 // 监听滚动然后请求加载数据
 let loadStaue = true;
 let loaadEnd = false;
 const loadArticle = (nowPage: number, maxnum: number) => {
-    console.log(312)
+    // console.log(312)
     getArticlePage(nowPage, maxnum).then((res) => {
     // BlogData = reactive(res.data.data);
     // console.log()
@@ -130,6 +120,17 @@ const rollingload = () => {
 }
 window.addEventListener('scroll', rollingload)
 
+//跳转到根据标签分类查内容
+const toBlogByTag = (tid: number, name: string) => {
+    // console.log(tid)
+    router.push({
+        path: '/artacle/tag',
+        query: {
+            'tid': tid,
+            'name': name
+        }
+    })
+}
 </script>
 
 <style scoped>

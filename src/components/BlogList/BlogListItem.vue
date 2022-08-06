@@ -12,8 +12,6 @@
 // import article from '../../types/article.js';
 import Tag from '../Tag/Tag.vue'
 
-
-
 interface Article{
     id: number,
     title: string,
@@ -32,14 +30,13 @@ const delHtmlTag = (str: string) => {
 
 <style scoped>
 .item{
+    width: 100%;
     word-break: break-all;
     word-wrap: break-word;
     box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
     padding: 0.6rem;
-    /* margin-top: 0.8rem; */
+    margin-top: 16px;
     /* margin: 1.6rem auto; */
-    grid-column-start: 5;
-    grid-column-end: 13;
 }
 h2{
     font-size: 1.32rem;
@@ -57,17 +54,5 @@ p{
     -webkit-line-clamp:2;				/*显示的行数*/
     overflow:hidden;					/*溢出部分隐藏*/
     text-overflow:ellipsis ;		    /*溢出部分用省略号显示*/
-}
-@media screen and (max-width: 672px) {
-    .item{
-        grid-column-start: 1;
-    grid-column-end: 17;
-    }
-}
-@media screen and (min-width: 672px) and (max-width: 1312px) {
-    .item{
-        grid-column-start: 1;
-    grid-column-end: 17;
-    }
 }
 </style>
