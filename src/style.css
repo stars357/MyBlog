@@ -11,13 +11,20 @@
   --nav-bg-color: rgba(255, 255, 255, 0.87);
   /* 顶部文字字体颜色，包含pc界面下在顶部时导航栏的字体颜色 */
   --top-text-color: #FAFCFF;
+  /* grid的列数 */
+  --grid-column-number: 16;
+  /* 小屏幕尺寸 */
+  --xs: 672px;
+  /* 中屏幕尺寸 */
+  --md: 1056px;
+  /* 大屏幕尺寸 */
+  --lg: 1312px;
+
   /* line-height: 24px;
   font-weight: 400; */
-
   /* color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424; */
-
   /* font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

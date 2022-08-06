@@ -1,10 +1,11 @@
 <template>
     <div>
-123
+        <Banner></Banner>
     </div>
 </template>
 
 <script setup lang="ts">
+import Banner from '../../components/Banner/Banner.vue';
 
 </script>
 

@@ -58,13 +58,13 @@ p{
     overflow:hidden;					/*溢出部分隐藏*/
     text-overflow:ellipsis ;		    /*溢出部分用省略号显示*/
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 672px) {
     .item{
         grid-column-start: 1;
     grid-column-end: 17;
     }
 }
-@media screen and (min-width: 768px) and (max-width: 1200px) {
+@media screen and (min-width: 672px) and (max-width: 1312px) {
     .item{
         grid-column-start: 1;
     grid-column-end: 17;

@@ -8,18 +8,22 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
+let props = defineProps({
+    title: {
+        type: String,
+        default: 'starry sky blog'
+    }
+})
 let title = ref('');
-
-let titData: string = 'starry sky blog';
 onMounted(() => {
-    const t = titData.split('');
+    const t = (props.title as string).split('');
     
     t.forEach((c, index) => {
         
         // console.log(c)
         setTimeout(()=>{
             title.value += c;
-        }, index*160 + 100)
+        }, index*100 + 100)
     })
 })
 

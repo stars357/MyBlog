@@ -138,7 +138,7 @@ nav p{
       opacity: 0;
     }
 } */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 672px) {
   nav {
     background-color: var(--nav-bg-color);
     transform: translateY(-100px);
@@ -195,13 +195,13 @@ nav p{
         opacity: 1;
     }
 }
-@media screen and (min-width: 768px) and (max-width: 1200px) {
+@media screen and (min-width: 672px) and (max-width: 1312px) {
   nav {
     flex-direction: row;
     justify-content: flex-end;
     height: 50px;
     line-height: 42px;
-    padding: 0.2rem 2rem;
+    padding: 0.2rem 1rem;
     background-color: rgba(255, 255, 255, 0);
   }
   nav p{
@@ -214,13 +214,13 @@ nav p{
     margin: 0 1rem;
   }
 }
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1312px) {
   nav {
     flex-direction: row;
     justify-content: flex-end;
     height: 50px;
     line-height: 42px;
-    padding: 0.2rem 2rem;
+    padding: 0.2rem 1rem;
     background-color: rgba(255, 255, 255, 0);
   }
    nav p{
@@ -228,6 +228,9 @@ nav p{
     position: absolute;
     top: 0;
     left: 1rem;
+  }
+  nav div{
+    margin: 0 1rem;
   }
 }
 </style>

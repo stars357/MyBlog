@@ -1,13 +1,19 @@
 <template>
     <div>
         <div class="banner">
-            <Banner></Banner>
+            <Banner title="starry sky blog"></Banner>
         </div>
         <main>
-            <BlogListItem v-for="art in BlogData" :key="art.id" :data="art"></BlogListItem>
+        <transition-group @enter="blogEnter">
+            <BlogListItem v-for="(art, index) in BlogData" :index="index" :key="art.id" :data="art"></BlogListItem>
+        </transition-group>
+            
             <div class="tags">
                 <div>
-                    <a href="javascript:;" v-for="tag in tagData" :key="tag.id"><Tag :name="tag.name" :bg-color="tag.bgColor"></Tag></a>
+                    <transition-group @enter="tagEnter">
+                        <a href="javascript:;" v-for="(tag, index) in tagData" :index="index" :key="tag.id"><Tag :name="tag.name" :bg-color="tag.bgColor"></Tag></a>
+                    </transition-group>
+                    
                     
                 </div>
             </div>
@@ -16,12 +22,37 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
 import Banner from "../../components/Banner/Banner.vue";
 import BlogListItem from "../../components/BlogList/BlogListItem.vue";
 import { getArticlePage } from '../../api/article'
 import Tag from '../../components/Tag/Tag.vue'
 import { getTagAll } from '../../api/tag'
+import gsap from 'gsap'
+
+//加载动画，使用gsap
+const blogEnter = (el: Element, done: any) => {
+    // console.log(el.getAttribute('index'));
+    let i = el.getAttribute('index') as unknown as number;
+    i = i % pageNumber;
+    gsap.from(el, {
+        opacity: 0, 
+        y: 160, 
+        delay: i * 0.08,
+        onComplete: done
+    })
+}
+const tagEnter = (el: Element, done: any) => {
+    // console.log(el.getAttribute('index'));
+    let i = el.getAttribute('index') as unknown as number;
+    i = i % pageNumber;
+    gsap.from(el, {
+        opacity: 0, 
+        // x: 10, 
+        delay: i * 0.15,
+        onComplete: done
+    })
+}
 
 interface Article{
     id: number,
@@ -37,24 +68,32 @@ interface Tag{
 //分页获取文章
 let nowPageNumber = 0;
 let pageNumber = 18;
-let BlogData: Array<Article>;
-let tagData: Array<Tag>;
+let BlogData: Array<Article> = reactive([]);
+let tagData: Array<Tag> = reactive([]);
 
 //请求数据初始化
-await getArticlePage(0, pageNumber).then((res) => {
-  BlogData = reactive(res.data.data);
-  nowPageNumber += pageNumber;
-});
-await getTagAll().then((res) => {
-    tagData = reactive(res.data.data);
-    console.log(tagData)
+onMounted(async () => {
+    await getArticlePage(0, pageNumber).then((res) => {
+        const data = res.data.data;
+        data.forEach((e: Article) => {
+            BlogData.push(e);
+        })
+        nowPageNumber += pageNumber;
+    });
+    await getTagAll().then((res) => {
+        const data = res.data.data;
+        data.forEach((e: Tag) => {
+            tagData.push(e);
+        })
+        // console.log(tagData)
+    })
 })
 
 // 监听滚动然后请求加载数据
 let loadStaue = true;
 let loaadEnd = false;
 const loadArticle = (nowPage: number, maxnum: number) => {
-    // console.log(312)
+    console.log(312)
     getArticlePage(nowPage, maxnum).then((res) => {
     // BlogData = reactive(res.data.data);
     // console.log()
@@ -67,7 +106,7 @@ const loadArticle = (nowPage: number, maxnum: number) => {
     });
     nowPageNumber += pageNumber;
     loadStaue = true;
-    console.log(BlogData);
+    // console.log(BlogData);
     })
 }
 const rollingload = () => {
@@ -98,7 +137,7 @@ main {
     /* width: 100%; */
     /* height: 200vh; */
     display: grid;
-    grid-template-columns: repeat(16, 1fr);
+    grid-template-columns: repeat(var(--grid-column-number), 1fr);
     column-gap: 16px;
     row-gap: 16px;
 }
@@ -113,7 +152,7 @@ main {
     padding: 0.5rem;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 672px) {
     main{
         padding: 1rem;
     }
@@ -122,7 +161,7 @@ main {
         grid-column-end: 17;
     }
 }
-@media screen and (min-width: 768px) and (max-width: 1200px) {
+@media screen and (min-width: 672px) and (max-width: 1312px) {
     main{
         padding: 0 1rem;
     }
