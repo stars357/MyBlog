@@ -1,5 +1,5 @@
-interface Tag{
-    id?: number,
+export interface Tag{
+    id: number,
     name: string,
     bgColor: string
 }

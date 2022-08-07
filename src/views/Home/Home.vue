@@ -8,7 +8,7 @@
             <div class="tags">
                 <div>
                     <transition-group @enter="tagEnter">
-                        <a href="javascript:;" @click="toBlogByTag(tag.id, tag.name)" v-for="(tag, index) in tagData" :index="index" :key="tag.id"><Tag :name="tag.name" :bg-color="tag.bgColor"></Tag></a>
+                        <a href="javascript:;" @click="toBlogByTag(tag.id, tag.name)" v-for="(tag, index) in tagData" :index="index" :key="tag.id"><TagInfo :name="tag.name" :bg-color="tag.bgColor"></TagInfo></a>
                     </transition-group>
                     
                     
@@ -23,10 +23,13 @@ import { reactive, onMounted } from "vue";
 import Banner from "../../components/Banner/Banner.vue";
 import BlogList from "../../components/BlogList/BlogList.vue";
 import { getArticlePage } from '../../api/article'
-import Tag from '../../components/Tag/Tag.vue'
+import TagInfo from '../../components/Tag/Tag.vue'
 import { getTagAll } from '../../api/tag'
 import gsap from 'gsap'
 import { useRouter } from "vue-router";
+import { aseEncryptParams } from '../../utils/cryptoAES'
+import { Article } from '../../types/article'
+import { Tag } from '../../types/tag'
 
 //初始化
 const router = useRouter();
@@ -44,17 +47,17 @@ const tagEnter = (el: Element, done: any) => {
     })
 }
 
-interface Article{
-    id: number,
-    title: string,
-    text?: string,
-    tags: []
-}
-interface Tag{
-    id: number,
-    name: string,
-    bgColor: string
-}
+// interface Article{
+//     id: number,
+//     title: string,
+//     text?: string,
+//     tags: []
+// }
+// interface Tag{
+//     id: number,
+//     name: string,
+//     bgColor: string
+// }
 //分页获取文章
 let nowPageNumber: number = 0;
 let pageNumber: number = Number(import.meta.env.VITE_PAGE_NUMBER);
@@ -122,12 +125,18 @@ window.addEventListener('scroll', rollingload)
 
 //跳转到根据标签分类查内容
 const toBlogByTag = (tid: number, name: string) => {
-    // console.log(tid)
+    let routerData = {
+        'tid': tid,
+        'name': name
+    }
+    const tagInfo = aseEncryptParams(JSON.stringify(routerData));
+    console.log(aseEncryptParams(routerData))
     router.push({
         path: '/artacle/tag',
         query: {
-            'tid': tid,
-            'name': name
+            // 'tid': tid,
+            // 'name': name,
+            'tag': tagInfo
         }
     })
 }

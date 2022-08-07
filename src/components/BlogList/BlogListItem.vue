@@ -3,21 +3,23 @@
         <h2>{{ data.title }}</h2>
         <p>{{ delHtmlTag(data.text) }}</p>
         <div class="tags">
-            <Tag v-for="tag in data.tags" :name="tag.name" :bg-color="tag.bgColor"></Tag>
+            <TagInfo v-for="tag in data.tags" :name="tag.name" :bg-color="tag.bgColor"></TagInfo>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 // import article from '../../types/article.js';
-import Tag from '../Tag/Tag.vue'
+import TagInfo from '../Tag/Tag.vue'
+import { Article } from '../../types/article'
+import { Tag } from '../../types/tag'
 
-interface Article{
-    id: number,
-    title: string,
-    text?: string,
-    tags: []
-}
+// interface Article{
+//     id: number,
+//     title: string,
+//     text?: string,
+//     tags: []
+// }
 
 const props = defineProps(['data'])
 // console.log(props.data)

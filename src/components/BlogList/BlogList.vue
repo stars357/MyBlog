@@ -9,18 +9,20 @@
 <script setup lang="ts">
 import BlogListItem from './BlogListItem.vue';
 import gsap from 'gsap'
+import { Article } from '../../types/article'
+// import { Tag } from '../../types/tag'
 
-interface Article{
-    id: number,
-    title: string,
-    text?: string,
-    tags: Array<Tag>
-}
-interface Tag{
-    id: number,
-    name: string,
-    bgColor: string
-}
+// interface Article{
+//     id: number,
+//     title: string,
+//     text?: string,
+//     tags: Array<Tag>
+// }
+// interface Tag{
+//     id: number,
+//     name: string,
+//     bgColor: string
+// }
 let props = defineProps({
     data: Array<Article>,
     number: {
