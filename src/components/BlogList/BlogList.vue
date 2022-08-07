@@ -28,7 +28,9 @@ let props = defineProps({
     number: {
         type: Number,
         default: 18
-    }
+    },
+    loadStaue: Boolean,
+    loadEnd: Boolean
 })
 
 const blogEnter = (el: Element, done: any) => {
@@ -43,10 +45,36 @@ const blogEnter = (el: Element, done: any) => {
     })
 }
 
+const emit = defineEmits(['update:loadStaue', 'load'])
+
+//滚动监听
+const rollingload = () => {
+    var pageWidth = window.innerWidth;
+        var pageHeight = window.innerHeight;
+        if (typeof pageWidth != "number") {
+            //在标准模式下面
+            if (document.compatMode == "CSS1Compat" ) {
+                pageWidth = document.documentElement.clientWidth;
+                pageHeight = document.documentElement.clientHeight;
+            } else {
+                pageWidth = document.body.clientWidth;
+                pageHeight = window.document.body.clientHeight;
+            }
+        }
+        if((document.documentElement.scrollHeight - window.scrollY - pageHeight) <= 10 && props.loadStaue && !props.loadEnd){
+        //   props.loadStaue = false;
+        //   loadArticle(nowPageNumber+1, pageNumber);
+            emit('update:loadStaue', false);
+            emit('load');
+            // console.log(props.loadStaue);
+        }
+}
+window.addEventListener('scroll', rollingload)
 </script>
 
 <style scoped>
 .list{
+    width: 100%;
     grid-column-start: 5;
     grid-column-end: 13;
 }
